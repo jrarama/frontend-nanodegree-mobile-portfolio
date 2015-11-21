@@ -44,7 +44,7 @@
                 },
             },
             jshint: {
-                all: ['Gruntfile.js', './js/**/*.js'],
+                all: ['Gruntfile.js', './js/**/*.js', '!./js/**/*.min.js'],
                 options: {
                     undef: true,
                     curly: true,
@@ -60,14 +60,14 @@
             },
             watch: {
                 scripts: {
-                    files: ['Gruntfile.js', './js/**/*.js'],
+                    files: ['Gruntfile.js', './js/**/*.js', '!./js/**/*.min.js'],
                     tasks: ['jshint:all', 'uglify', 'psi-ngrok'],     //tasks to run
                     options: {
                         livereload: true                        //reloads the browser
                     }
                 },
                 styles: {
-                    files: [ './css/**/*.css' ],
+                    files: [ './css/**/*.css', '!./css/**/*.min.css' ],
                     tasks: ['cssmin', 'psi-ngrok'],     //tasks to run
                     options: {
                         livereload: true                        //reloads the browser
