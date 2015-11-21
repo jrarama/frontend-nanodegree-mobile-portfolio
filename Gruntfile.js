@@ -19,7 +19,7 @@
                 },
                 pizza: {
                     files: {
-                      './css/pizza.min.css': ['./css/bootstrap-grid.css', './css/style.css']
+                      './css/pizza.min.css': ['./css/bootstrap-grid.css', './css/pizza.css']
                     }
                 },
                 main: {
@@ -103,7 +103,8 @@
                 options: {
                     nokey: true,
                     locale: "en_US",
-                    threshold: 40
+                    threshold: 40,
+                    paths: [ '/pizza.html' ]
                 },
                 local: {
                     options: {
