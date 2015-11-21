@@ -9,8 +9,9 @@
         require('load-grunt-tasks')(grunt);
 
         // Grunt configuration
-        grunt.initConfig({
+        var config = {
             pkg: grunt.file.readJSON('package.json'),
+            inline: { },
             cssmin: {
                 options: {
                     shorthandCompacting: false,
@@ -24,7 +25,7 @@
                 main: {
                     files: {
                       './css/style.min.css': ['./css/style.css'],
-                      './css/print.min.css': ['./css/print.css'],
+                      './css/print.min.css': ['./css/print.css']
                     }
                 }
             },
@@ -58,9 +59,22 @@
                     }
                 }
             },
+            htmlmin: {                                     // Task
+                dist: {                                      // Target
+                    options: {                                 // Target options
+                        removeComments: true,
+                        collapseWhitespace: true,
+                        preserveLineBreaks: true,
+                        minifyJS: true
+                    },
+                    files: {
+
+                    }
+                }
+            },
             watch: {
                 scripts: {
-                    files: ['Gruntfile.js', './js/**/*.js', '!./js/**/*.min.js'],
+                    files: ['./js/**/*.js', '!./js/**/*.min.js'],
                     tasks: ['jshint:all', 'uglify', 'psi-ngrok'],     //tasks to run
                     options: {
                         livereload: true                        //reloads the browser
@@ -74,11 +88,15 @@
                     }
                 },
                 html: {
-                    files: [ './**/*.html'],
-                    tasks: ['psi-ngrok'],
+                    files: [ './src/*.html'],
+                    tasks: ['inline', 'htmlmin', 'psi-ngrok'],
                     options: {
 
                     },
+                },
+                grunt: {
+                    files: ['Gruntfile.js'],
+                    tasks: [ 'jshint:all', 'uglify', 'cssmin', 'inline', 'htmlmin', 'psi-ngrok', ]
                 }
             },
             pagespeed: {
@@ -98,7 +116,23 @@
                     }
                 }
             }
-        });
+        };
+
+        /* Loop all html in src since inline task can't have array tasks
+         */
+        ['index', 'pizza', 'project-2048', 'project-mobile', 'project-webperf']
+            .forEach(function(item) {
+                var key = 'src/' + item + '.html';
+                var val = item + '.html';
+                config.inline[item] = {
+                    src: key,
+                    dest: val
+                };
+
+                config.htmlmin.dist.files[val] = val;
+            });
+
+        grunt.initConfig(config);
 
         /**
          * grunt-pagespeed-ngrok
