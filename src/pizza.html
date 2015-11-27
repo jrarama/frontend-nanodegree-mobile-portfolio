@@ -1,7 +1,10 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <link rel="stylesheet" href="css/pizza.min.css">
+  <!-- build:css inline ../css/pizza.tidy.min.css -->
+  <link rel="stylesheet" href="../css/bootstrap-grid.css">
+  <link rel="stylesheet" href="../css/pizza.css">
+  <!-- /build -->
 </head>
 
 <body>
@@ -31,6 +34,7 @@
         </div>
       </div>
       <div id="movingPizzas1" class="col-md-6">
+        <img class="mover" src="img/pizza.png" style="transform: translate3d(0px, 0px, 0px);">
       </div>
     </div>
     <div id="callToAction" class="row">
@@ -136,7 +140,7 @@
     </div>
     <div id="footer" class="col-md-12">Thanks for visiting! &copy; 2014 Udacity</div>
   </div>
-  <script type="text/javascript" src="js/pizza.js"></script>
+  <script type="text/javascript" src="js/pizza.min.js"></script>
 </body>
 
 </html>

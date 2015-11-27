@@ -12,14 +12,34 @@
         var config = {
             pkg: grunt.file.readJSON('package.json'),
             inline: { },
+            uncss: {
+                dist: {
+                    files: {
+                        'css/pizza.tidy.min.css': ['src/pizza.html']
+                    }
+                }
+            },
+            processhtml: {
+                dist: {
+                    files: {
+                        'pizza.html': ['src/pizza.html']
+                    }
+                }
+            },
             cssmin: {
                 options: {
                     shorthandCompacting: false,
-                    roundingPrecision: -1
+                    roundingPrecision: -1,
+                    keepSpecialComments: 0
                 },
                 pizza: {
                     files: {
                       './css/pizza.min.css': ['./css/bootstrap-grid.css', './css/pizza.css']
+                    }
+                },
+                pizzaTidy: {
+                    files: {
+                      './css/pizza.tidy.min.css': ['./css/pizza.tidy.min.css']
                     }
                 },
                 main: {
@@ -70,33 +90,51 @@
                     files: {
 
                     }
+                },
+                pizza: {
+                    options: {                                 // Target options
+                        removeComments: true,
+                        collapseWhitespace: true,
+                        preserveLineBreaks: true,
+                        minifyJS: true
+                    },
+                    files: {
+                        'pizza.html' : 'pizza.html'
+                    }
                 }
             },
             watch: {
                 scripts: {
-                    files: ['./js/**/*.js', '!./js/**/*.min.js'],
+                    files: ['./js/perfmatters.js'],
                     tasks: ['jshint:all', 'uglify', 'psi-ngrok'],     //tasks to run
                     options: {
                         livereload: true                        //reloads the browser
                     }
                 },
                 styles: {
-                    files: [ './css/**/*.css', '!./css/**/*.min.css' ],
-                    tasks: ['cssmin', 'psi-ngrok'],     //tasks to run
+                    files: [ './css/style.css', './css/print.css' ],
+                    tasks: ['cssmin:main', 'psi-ngrok'],     //tasks to run
                     options: {
                         livereload: true                        //reloads the browser
                     }
                 },
+                pizza: {
+                    files: [ './css/pizza.css', './css/bootstrap-grid.css' ],
+                    tasks: [ 'uncss', 'cssmin:pizzaTidy', 'processhtml', 'htmlmin:pizza'],     //tasks to run
+                    options: {
+                        livereload: true                        //reloads the browser
+                    }
+                },
+                pizzaTidy: {
+                    files: [ './src/pizza.html' ],
+                    tasks: [ 'uncss', 'cssmin:pizzaTidy', 'processhtml', 'htmlmin:pizza']
+                },
                 html: {
-                    files: [ './src/*.html'],
-                    tasks: ['inline', 'htmlmin', 'psi-ngrok'],
+                    files: [], // This array is set on the loop below
+                    tasks: ['inline', 'htmlmin:dist', 'psi-ngrok'],
                     options: {
 
                     },
-                },
-                grunt: {
-                    files: ['Gruntfile.js'],
-                    tasks: [ 'jshint:all', 'uglify', 'cssmin', 'inline', 'htmlmin', 'psi-ngrok', ]
                 }
             },
             pagespeed: {
@@ -121,7 +159,7 @@
 
         /* Loop all html in src since inline task can't have array tasks
          */
-        ['index', 'pizza', 'project-2048', 'project-mobile', 'project-webperf']
+        ['index', 'project-2048', 'project-mobile', 'project-webperf']
             .forEach(function(item) {
                 var key = 'src/' + item + '.html';
                 var val = item + '.html';
@@ -129,6 +167,8 @@
                     src: key,
                     dest: val
                 };
+
+                config.watch.html.files.push(key);
 
                 config.htmlmin.dist.files[val] = val;
             });
