@@ -343,9 +343,9 @@ var ingredientItemizer = function(ingredients, times) {
 var makeRandomPizza = function() {
   var pizza = '';
 
-  var numberOfMeats = Math.floor((Math.random() * 4));
-  var numberOfNonMeats = Math.floor((Math.random() * 3));
-  var numberOfCheeses = Math.floor((Math.random() * 2));
+  var numberOfMeats = ~~((Math.random() * 4));
+  var numberOfNonMeats = ~~((Math.random() * 3));
+  var numberOfCheeses = ~~((Math.random() * 2));
 
   pizza += ingredientItemizer(pizzaIngredients.meats, numberOfMeats);
   pizza += ingredientItemizer(pizzaIngredients.nonMeats, numberOfNonMeats);
