@@ -105,7 +105,7 @@
             },
             watch: {
                 scripts: {
-                    files: ['./js/perfmatters.js'],
+                    files: ['./js/*.js'],
                     tasks: ['jshint:all', 'uglify', 'psi-ngrok'],     //tasks to run
                     options: {
                         livereload: true                        //reloads the browser
